@@ -1,0 +1,38 @@
+---
+description: Mandanten, Module, Versionierung und Git-Deploy analog APInterface (eigenständig unter Belegarchiv.ch).
+alwaysApply: true
+---
+
+# Belegarchiv.ch — Architektur- und Deploy-Regeln (APInterface-Parität)
+
+Dieses Projekt ist **eigenständig** von APInterface, folgt aber denselben **Prinzipien** (siehe [Modulentwicklung APInterface](https://apinterface.com/docs/modulentwicklung)).
+
+## Mandanten
+
+- Zentrale Einheit **Company** (`company_id` überall an Daten gebunden).
+- Nutzer können mehreren Companies zugeordnet sein; API/JWT führt einen **aktiven Company-Kontext**.
+- Keine Queries ohne **Tenant-Filter**; keine Secrets in Git.
+
+## Module
+
+- **Eigenes Repo** und **eigene Version** pro Modul; Release-Artefakte **unveränderlich** (keine produktiven In-Place-Edits auf dem Server).
+- Integration nur über **Core-Schnittstellen** (REST v1, `getCompanyAppCredentials`, Router-Registration).
+- Sichtbarkeit/Aktivierung pro Firma über **`appKey`** / `CompanyApp.enabled`.
+- Modul-Manifest: `moduleManifest.json` + `index.js` (`register(router, deps)`).
+
+## Repositories (Variante 1 — getrennt versioniert)
+
+- **Meta-Repo** `StefanB80/belegarchiv`: Doku, `.cursor/rules`, Submodule-Refs; **kein** produktiver App-Code-Pflichtbestandteil.
+- **Core-Repo** `StefanB80/belegarchiv-core`: Anwendungskern + API; **Repo-Root** = Inhalt des Workspace-Ordners `core/`.
+- **Platform-Repo** `StefanB80/belegarchiv-platform`: Compose, Reverse-Proxy, Deploy-Hooks, `DEPLOY.md` (= Workspace `platform/`).
+- **Modul-Repos**: je Modul ein Repo (z. B. `belegarchiv-module-example-app`), Release-Ordner `MAJOR.MINOR.PATCH/` unter dem Modul-`appKey`.
+
+## Deploy (vServer)
+
+- Deploy **über Git** (Push → CI oder Bare-Repo `post-receive` → Checkout/Release-Symlink → `npm ci` → `prisma migrate deploy` → Service-Restart).
+- Pfade auf dem Host **isoliert**, z. B. `/opt/apps/belegarchiv/{core,modules,platform,releases}` — andere Projekte nicht anfassen.
+
+## Agent-Verhalten
+
+- Änderungen am Core dürfen **Modul-Kontrakte** (`deps`, Manifest-Felder, REST v1) nicht still brechen; Breaking Changes versionieren und dokumentieren.
+- Produktions-Geheimnisse nur in Server-Env / Secret-Store / `company_app_credentials`, nie im Repository.

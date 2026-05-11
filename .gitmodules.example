@@ -1,0 +1,11 @@
+[submodule "core"]
+	path = core
+	url = https://github.com/StefanB80/belegarchiv-core.git
+
+[submodule "platform"]
+	path = platform
+	url = https://github.com/StefanB80/belegarchiv-platform.git
+
+[submodule "modules/example-app"]
+	path = modules/example-app
+	url = https://github.com/StefanB80/belegarchiv-module-example-app.git
