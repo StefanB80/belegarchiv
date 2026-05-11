@@ -29,8 +29,9 @@ Dieses Projekt ist **eigenständig** von APInterface, folgt aber denselben **Pri
 
 ## Deploy (vServer)
 
-- Deploy **über Git** (Push → CI oder Bare-Repo `post-receive` → Checkout/Release-Symlink → `npm ci` → `prisma migrate deploy` → Service-Restart).
-- Pfade auf dem Host **isoliert**, z. B. `/opt/apps/belegarchiv/{core,modules,platform,releases}` — andere Projekte nicht anfassen.
+- **Core:** Produktions-Deploy an **versionierte Git-Tags** `v*.*.*` koppeln (kein reiner `main`-Deploy). CI/Bare-Repo: Checkout exakter Tag/Release, dann `npm ci` → `prisma migrate deploy` → Service-Restart.
+- Pfade auf dem Host **isoliert**, z. B. `/opt/apps/belegarchiv/{core,modules,platform}` — andere Projekte nicht anfassen.
+- **Schlüssel:** Deploy Key **pro GitHub-Repo** für `git fetch`; separater SSH-Key für GitHub Actions → vServer (siehe `platform/DEPLOY.md`).
 
 ## Agent-Verhalten
 
