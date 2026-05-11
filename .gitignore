@@ -1,8 +1,3 @@
-node_modules/
-dist/
-.env
-*.db
-*.db-journal
-uploads/
-core/uploads/
+# Meta-Repo: Core/Platform/Module sind eigene Git-Repos (Unterordner nur lokal).
 .DS_Store
+Thumbs.db
