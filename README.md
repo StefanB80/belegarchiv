@@ -47,3 +47,9 @@ Operative Anleitung: Repository **Platform** → Datei `DEPLOY.md` (nach Aufteil
 ## Cursor / KI
 
 Projektregeln: `.cursor/rules/belegarchiv-apinterface-parity.mdc` (`alwaysApply`).
+
+## Lokaler Workspace (dieser Ordner)
+
+`core/`, `platform/` und `modules/example-app/` sind **eigene Git-Repositories** (jeweils `origin` → GitHub). Das **Meta-Repo** liegt in `c:\Belegarchiv.ch` (nur README, `.cursor/`, `.gitmodules.example`, `.gitignore`) — `git add .` im Meta-Root vermeiden.
+
+**Submodule im Meta-Repo** (`git submodule add …`) erst sinnvoll in einem **frischen Meta-Clone**, wenn die Pfade `core/` / `platform/` noch leer sind — sonst mit bestehenden Ordnern kollidieren. Bis dahin: so wie jetzt mit separaten Remotes in den Unterordnern arbeiten.
