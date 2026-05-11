@@ -42,7 +42,9 @@ Bis die Submodule stehen, kannst du lokal weiterhin im **gemeinsamen Workspace**
 
 ## Deploy
 
-Operative Anleitung: Repository **Platform** → Datei `DEPLOY.md` (nach Aufteilung dort; lokal vorerst unter `platform/DEPLOY.md`).
+Operative Anleitung: Repository **Platform** → Datei [`DEPLOY.md`](https://github.com/StefanB80/belegarchiv-platform/blob/main/DEPLOY.md) (GitHub Actions Secrets, systemd, Bootstrap-Skript).
+
+**GitHub Secrets** kann ich von hier aus nicht setzen (`gh` fehlt, kein Token) — im Repo **belegarchiv-core** unter *Settings → Secrets and variables → Actions* anlegen (Namen siehe `DEPLOY.md`).
 
 ## Cursor / KI
 
