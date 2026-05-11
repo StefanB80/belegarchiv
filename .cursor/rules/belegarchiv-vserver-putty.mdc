@@ -10,3 +10,5 @@ Konkrete Befehle und Pfade: **`belegarchiv-platform`** → `docs/PUTTY-ROOT-BEFE
 Kernpfade: `/opt/apps/belegarchiv/config/core.env`, Checkout `/opt/apps/belegarchiv/core/current`, Daten typisch unter `/opt/apps/belegarchiv/data/`.
 
 Bei Fragen zu „Datei auf dem Server anpassen“ oder „DB prüfen“: zuerst dieses Dokument nutzen, nicht erneut nach Standardpfaden fragen.
+
+**Pflicht für den Agenten:** Sobald der Nutzer den vServer (PuTTY, **root**) meint, **immer** vollständige, **nacheinander ausführbare Shell-Befehle** liefern (copy-paste-tauglich), nicht nur Konzept oder „in Plesk klicken“, sofern nicht ausdrücklich nur Theorie gewünscht ist. Plesk nur erwähnen, wenn der Nutzer Plesk nutzt — sonst **nginx/Certbot**-Variante mit Root-Befehlen.
