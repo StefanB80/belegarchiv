@@ -1,14 +1,11 @@
 ---
-description: vServer-Befehle (PuTTY/SSH root) für Belegarchiv — keine wiederholten Rückfragen zu Pfaden/Editoren/DB.
+description: vServer, Deploy und manuelle Schritte (PuTTY root)
 alwaysApply: true
 ---
 
-# Belegarchiv vServer (root / PuTTY)
+# Belegarchiv.ch — vServer / Deploy
 
-Konkrete Befehle und Pfade: **`belegarchiv-platform`** → `docs/PUTTY-ROOT-BEFEHLE.md` (oder lokal `platform/docs/PUTTY-ROOT-BEFEHLE.md`).
-
-Kernpfade: `/opt/apps/belegarchiv/config/core.env`, Checkout `/opt/apps/belegarchiv/core/current`, Daten typisch unter `/opt/apps/belegarchiv/data/`.
-
-Bei Fragen zu „Datei auf dem Server anpassen“ oder „DB prüfen“: zuerst dieses Dokument nutzen, nicht erneut nach Standardpfaden fragen.
-
-**Pflicht für den Agenten:** Sobald der Nutzer den vServer (PuTTY, **root**) meint, **immer** vollständige, **nacheinander ausführbare Shell-Befehle** liefern (copy-paste-tauglich), nicht nur Konzept oder „in Plesk klicken“, sofern nicht ausdrücklich nur Theorie gewünscht ist. Plesk nur erwähnen, wenn der Nutzer Plesk nutzt — sonst **nginx/Certbot**-Variante mit Root-Befehlen.
+- **Core-Deploy:** Läuft über **GitHub Actions** mit Repository-Secrets (`BAC_*`) und **Deploy Key** auf den vServer — der Nutzer muss dafür **kein** manuelles `git fetch` im Core-Checkout ausführen, wenn der Workflow den Checkout aktualisiert.
+- **Vorgehen:** Operative Schritte am vServer **immer Schritt für Schritt** per **SSH (PuTTY, typisch root)** — nacheinander ausführbar, mit erwarteter Ausgabe/Kontrolle zwischen den Schritten.
+- **Wenn der Nutzer manuell eingreifen muss:** Konkrete **Bash-Befehle für PuTTY als root** (oder als `belegarchiv`, falls explizit) liefern — keine vagen Hinweise wie „git fetch ausführen“ ohne Kontext.
+- **Module:** Eigene Repos (z. B. `belegarchiv-module-UID`); Actions-Secrets **pro Repo** (`BAM_*` = Example-Modul, `BAU_*` = UID-Modul). Release als Tag + Verzeichnis unter `MODULES_PATH/<appKey>/<semver>/`. Nur wenn kein automatisiertes Modul-Deploy existiert: PuTTY-Befehle zum Kopieren/Neustart wie in der Modul-`README.md`.
