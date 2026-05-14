@@ -16,6 +16,7 @@ Dieses Projekt ist **eigenständig** von APInterface, folgt aber denselben **Pri
 ## Module
 
 - **Eigenes Repo** und **eigene Version** pro Modul; Release-Artefakte **unveränderlich** (keine produktiven In-Place-Edits auf dem Server).
+- **Hybrid:** Remote-Module (eigener Dienst, `https`-`baseUrl`) können per `BELEGARCHIV_REMOTE_MODULES` / `BELEGARCHIV_REMOTE_MODULES_FILE` im Katalog erscheinen; eingebettetes Modul mit gleichem `appKey` hat Vorrang (Meta-README, Abschnitt *Hybrid-Module*). Ping: `GET /api/v1/companies/:companyId/apps/:appKey/ping` (Remote-`fetch` oder eingebetteter Loopback).
 - Integration nur über **Core-Schnittstellen** (REST v1, `getCompanyAppCredentials`, Router-Registration).
 - Sichtbarkeit/Aktivierung pro Firma über **`appKey`** / `CompanyApp.enabled`.
 - Modul-Manifest: `moduleManifest.json` + `index.js` (`register(router, deps)`).

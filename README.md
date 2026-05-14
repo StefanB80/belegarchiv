@@ -46,6 +46,15 @@ Operative Anleitung: Repository **Platform** → Datei [`DEPLOY.md`](https://git
 
 **GitHub Secrets** kann ich von hier aus nicht setzen (`gh` fehlt, kein Token) — im Repo **belegarchiv-core** unter *Settings → Secrets and variables → Actions* anlegen (Namen siehe `DEPLOY.md`).
 
+## Hybrid-Module (Remote-Dienste)
+
+Zusätzlich zu eingebetteten Modulen unter `modules/<appKey>/<semver>/` kann der Katalog **Remote-Apps** führen, die **nicht** auf dem Core-Server liegen (eigener Dienst, eigener Release-Zyklus).
+
+- **Konfiguration (ohne DB):** Umgebungsvariable `BELEGARCHIV_REMOTE_MODULES` (JSON-Array) und/oder `BELEGARCHIV_REMOTE_MODULES_FILE` (Pfad zu JSON, siehe `core/config/remote-modules.example.json`). Nur **https**-`baseUrl`, außer `BELEGARCHIV_ALLOW_INSECURE_REMOTE=1` (Entwicklung).
+- **Katalog:** `GET /api/v1/catalog/modules` liefert `integrationKind` (`embedded` \| `remote`) und bei Remote `remoteBaseUrl`.
+- **Konflikt:** Gleicher `appKey` auf Disk und in Remote-Config: **Disk-Modul gewinnt**.
+- **Ping:** `GET /api/v1/companies/:companyId/apps/:appKey/ping` — eingebettete Module per Loopback (`register`), Remote per `fetch` auf `{remoteBaseUrl}{remotePingPath}` (Default `/belegarchiv/v1/ping`). Optional `BELEGARCHIV_REMOTE_PROXY_SECRET` für HMAC-Header (`core/src/lib/remoteModuleProxy.js`). Weitere Proxys (Webhooks, mTLS) können darauf aufbauen.
+
 ## Cursor / KI
 
 Projektregeln: `.cursor/rules/belegarchiv-apinterface-parity.mdc` (`alwaysApply`).
