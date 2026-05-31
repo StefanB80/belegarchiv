@@ -26,11 +26,11 @@ Dieses Projekt ist **eigenständig** von APInterface, folgt aber denselben **Pri
 - **Meta-Repo** `StefanB80/belegarchiv`: Doku, `.cursor/rules`, Submodule-Refs; **kein** produktiver App-Code-Pflichtbestandteil.
 - **Core-Repo** `StefanB80/belegarchiv-core`: Anwendungskern + API; **Repo-Root** = Inhalt des Workspace-Ordners `core/`.
 - **Platform-Repo** `StefanB80/belegarchiv-platform`: Compose, Reverse-Proxy, Deploy-Hooks, `DEPLOY.md` (= Workspace `platform/`).
-- **Modul-Repos**: je Modul ein Repo (z. B. `belegarchiv-module-example-app`), Release-Ordner `MAJOR.MINOR.PATCH/` unter dem Modul-`appKey`.
+- **Modul-Repos**: je Modul ein Repo (z. B. `belegarchiv-module-example-app`, `belegarchiv-module-belege`), Release-Ordner `MAJOR.MINOR.PATCH/` unter dem Modul-`appKey`.
 
 ## Deploy (vServer)
 
-- **Core:** Produktions-Deploy an **versionierte Git-Tags** `v*.*.*` koppeln (kein reiner `main`-Deploy). CI/Bare-Repo: Checkout exakter Tag/Release, dann `npm ci` → `prisma migrate deploy` → Service-Restart.
+- **Core:** Produktions-Deploy **nur** an **Git-Tags** `v*.*.*` (APInterface: Commit `(vX.Y.Z)` + `git push origin vX.Y.Z`). **Kein** Standard-`main`-Push für Releases. CI bei Tag/PR; Checkout exakter Tag auf dem Server.
 - Pfade auf dem Host **isoliert**, z. B. `/opt/apps/belegarchiv/{core,modules,platform}` — andere Projekte nicht anfassen.
 - **Schlüssel / Git:** Deploy Key **pro GitHub-Repo** für `git fetch`; Core-Remote fest **`git@github.com:StefanB80/belegarchiv-core.git`**. Actions-Secrets **pro Komponente eigenes Präfix** (Core: `BAC_*`, vgl. APInterface `BEC_*`); keine generischen `VPS_*`-Namen ohne Rückfrage einführen (siehe `platform/DEPLOY.md`).
 

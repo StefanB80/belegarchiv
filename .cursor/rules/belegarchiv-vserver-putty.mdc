@@ -5,7 +5,13 @@ alwaysApply: true
 
 # Belegarchiv.ch — vServer / Deploy
 
-- **Core-Deploy:** Läuft über **GitHub Actions** mit Repository-Secrets (`BAC_*`) und **Deploy Key** auf den vServer — der Nutzer muss dafür **kein** manuelles `git fetch` im Core-Checkout ausführen, wenn der Workflow den Checkout aktualisiert.
+- **Core-Deploy:** Läuft über **GitHub Actions** mit Repository-Secrets (`BAC_*`) und **Deploy Key** auf den vServer — der Nutzer muss dafür **kein** manuelles `git fetch` im Core-Checkout ausführen, wenn der Workflow den Checkout aktualisiert. Nach jedem Core- **und** Modul-Deploy: eigener Actions-Schritt **„Core-Restart nach Deploy (Pflicht)“** (getrennt vom Checkout), Skript `scripts/restart-belegarchiv-core-after-deploy.sh` (`systemctl restart` + `/health`); fehlgeschlagener Restart = roter Deploy-Lauf.
 - **Vorgehen:** Operative Schritte am vServer **immer Schritt für Schritt** per **SSH (PuTTY, typisch root)** — nacheinander ausführbar, mit erwarteter Ausgabe/Kontrolle zwischen den Schritten.
 - **Wenn der Nutzer manuell eingreifen muss:** Konkrete **Bash-Befehle für PuTTY als root** (oder als `belegarchiv`, falls explizit) liefern — keine vagen Hinweise wie „git fetch ausführen“ ohne Kontext.
-- **Module:** Eigene Repos (z. B. `belegarchiv-module-UID`); Actions-Secrets **pro Repo** (`BAM_*` = Example-Modul, `BAU_*` = UID-Modul). Release als Tag + Verzeichnis unter `MODULES_PATH/<appKey>/<semver>/`. Nur wenn kein automatisiertes Modul-Deploy existiert: PuTTY-Befehle zum Kopieren/Neustart wie in der Modul-`README.md`.
+- **Module:** Eigene Repos; **UID-**, **Example-** und **Belege-**Modul mit GitHub Actions auf den vServer (`deploy-module-uid-vserver` / `deploy-module-example-vserver` / `deploy-module-belege-vserver`), Secrets **pro Repo** (`BAU_*` = UID, `BAM_*` = Example, `BAB_*` = Belege). Release als Tag `v*.*.*` + Verzeichnis unter `MODULES_PATH/<appKey>/<semver>/`. Weitere Module ohne CI: PuTTY-Befehle wie in der jeweiligen Modul-`README.md`.
+
+## Versionierung (APInterface-Muster — siehe `belegarchiv-release-versioning.mdc`)
+
+- **Deploy nur per Tag-Push:** `git push origin vX.Y.Z` — **nicht** standardmäßig `git push origin main`.
+- Commit: `fix(ui): … (vX.Y.Z)`; Tag `vX.Y.Z` auf demselben Commit.
+- Roter **CI auf main** ≠ fehlgeschlagenes Release; Release = grüner **`deploy-core-vserver`** mit Tag.

@@ -6,6 +6,18 @@
 	path = platform
 	url = https://github.com/StefanB80/belegarchiv-platform.git
 
+[submodule "modules/uid"]
+	path = modules/uid
+	url = https://github.com/StefanB80/belegarchiv-module-UID.git
+
 [submodule "modules/example-app"]
 	path = modules/example-app
 	url = https://github.com/StefanB80/belegarchiv-module-example-app.git
+
+[submodule "modules/belege"]
+	path = modules/belege
+	url = https://github.com/StefanB80/belegarchiv-module-belege.git
+
+[submodule "modules/ocr"]
+	path = modules/ocr
+	url = https://github.com/StefanB80/belegarchiv-module-ocr.git

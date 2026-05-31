@@ -9,14 +9,17 @@ Dieses Repository ist der **Meta-Einstieg** (Dokumentation, Regeln, lokaler Gesa
 | **Meta** | `StefanB80/belegarchiv` | Dieses Repo: README, `.cursor/rules`, Submodule-Refs, ggf. Gesamt-Skripte |
 | **Core** | `StefanB80/belegarchiv-core` *(anlegen)* | API, Prisma, Auth, Modul-Loader — **Repo-Root = heutiger Ordner `core/`** |
 | **Platform** | `StefanB80/belegarchiv-platform` *(anlegen)* | Compose, Nginx, Deploy-Hooks, `DEPLOY.md` |
-| **Modul** | z. B. `StefanB80/belegarchiv-module-example-app` *(anlegen)* | Semver-Ordner (`0.1.0/`, …), `moduleManifest.json`, `index.js` |
+| **Modul UID** | [`StefanB80/belegarchiv-module-UID`](https://github.com/StefanB80/belegarchiv-module-UID) | CHE/UID im Mandanten-Kontext; Deploy per Actions **deploy-module-uid-vserver**, Secrets **`BAU_*`** |
+| **Modul (Beispiel)** | [`StefanB80/belegarchiv-module-example-app`](https://github.com/StefanB80/belegarchiv-module-example-app) *(optional)* | Semver-Ordner (`0.1.0/`, …), `moduleManifest.json`, `index.js`; Actions **deploy-module-example-vserver**, **`BAM_*`** |
+| **Modul Belege** | [`StefanB80/belegarchiv-module-belege`](https://github.com/StefanB80/belegarchiv-module-belege) *(anlegen)* | Belegverwaltung als eigenes Modul (`appKey` **belege**); Actions **deploy-module-belege-vserver**, Secrets **`BAB_*`** |
+| **Modul OCR** | [`StefanB80/belegarchiv-module-ocr`](https://github.com/StefanB80/belegarchiv-module-ocr) *(anlegen)* | Volltextsuche in Belegen (`appKey` **ocr**); Actions **deploy-module-ocr-vserver**, Secrets **`BAO_*`** |
 
 ## Erst-Einrichtung (wenn die Ziel-Repos leer sind)
 
 1. **Core-Repo** `belegarchiv-core` auf GitHub anlegen.  
    Lokal im Ordner `core/`: `git init`, Remote setzen, `main` pushen (Inhalt = jetziger `core/`-Tree inkl. `.github/workflows/`).
 2. **Platform-Repo** `belegarchiv-platform` anlegen, Inhalt = jetziger Ordner `platform/` pushen.
-3. **Modul-Repo(s)** anlegen; Inhalt = jeweiliger Modulbaum (z. B. `example-app` mit Unterordner `0.1.0/`).
+3. **Modul-Repo(s):** z. B. **UID** ([belegarchiv-module-UID](https://github.com/StefanB80/belegarchiv-module-UID), produktiver Actions-Deploy) und optional **Example** — Inhalt = jeweiliger Modulbaum mit SemVer-Unterordner.
 4. **Meta-Repo** (dieses): `.gitmodules.example` nach `.gitmodules` kopieren, URLs prüfen, dann:
 
    ```bash
@@ -30,10 +33,28 @@ Dieses Repository ist der **Meta-Einstieg** (Dokumentation, Regeln, lokaler Gesa
    git submodule add https://github.com/StefanB80/belegarchiv-platform.git platform
    ```
 
+   Für das UID-Modul (optional, lokaler Meta-Checkout):
+
+   ```bash
+   git submodule add https://github.com/StefanB80/belegarchiv-module-UID.git modules/uid
+   ```
+
    Für ein Beispielmodul (optional):
 
    ```bash
    git submodule add https://github.com/StefanB80/belegarchiv-module-example-app.git modules/example-app
+   ```
+
+   Für das Modul **Belege** (optional):
+
+   ```bash
+   git submodule add https://github.com/StefanB80/belegarchiv-module-belege.git modules/belege
+   ```
+
+   Für das Modul **OCR** (optional):
+
+   ```bash
+   git submodule add https://github.com/StefanB80/belegarchiv-module-ocr.git modules/ocr
    ```
 
 Bis die Submodule stehen, kannst du lokal weiterhin im **gemeinsamen Workspace** (alle Ordner nebeneinander) arbeiten — die Aufteilung ist die verbindliche Zielstruktur für Git und vServer.
@@ -61,6 +82,6 @@ Projektregeln: `.cursor/rules/belegarchiv-apinterface-parity.mdc` (`alwaysApply`
 
 ## Lokaler Workspace (dieser Ordner)
 
-`core/`, `platform/` und `modules/example-app/` sind **eigene Git-Repositories** (jeweils `origin` → GitHub). Das **Meta-Repo** liegt in `c:\Belegarchiv.ch` (nur README, `.cursor/`, `.gitmodules.example`, `.gitignore`) — `git add .` im Meta-Root vermeiden.
+`core/`, `platform/`, `modules/uid/` und ggf. `modules/example-app/` sind **eigene Git-Repositories** (jeweils `origin` → GitHub). Das **Meta-Repo** liegt in `c:\Belegarchiv.ch` (nur README, `.cursor/`, `.gitmodules.example`, `.gitignore`) — `git add .` im Meta-Root vermeiden.
 
 **Submodule im Meta-Repo** (`git submodule add …`) erst sinnvoll in einem **frischen Meta-Clone**, wenn die Pfade `core/` / `platform/` noch leer sind — sonst mit bestehenden Ordnern kollidieren. Bis dahin: so wie jetzt mit separaten Remotes in den Unterordnern arbeiten.

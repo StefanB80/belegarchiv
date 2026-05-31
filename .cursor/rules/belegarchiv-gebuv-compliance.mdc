@@ -1,0 +1,18 @@
+---
+description: GeBüV / OR — Belege revisionssicher archivieren; keine Lösch- oder Überschreib-Shortcuts.
+alwaysApply: true
+---
+
+# Belegarchiv — GeBüV-konforme Belegarchivierung
+
+**Pflicht:** Geschäftsbelege müssen **GeBüV- und OR-konform** (Aufbewahrung, Unveränderlichkeit, Nachvollziehbarkeit) gespeichert werden. Details und Gap-Liste: `core/docs/gebuv-belegarchivierung.md`.
+
+## Für Agenten bei Core-/Storage-/Audit-Änderungen
+
+- **Originaldateien** nach Upload nicht überschreiben; neue Fassung = neues Dokument.
+- **Kein produktives Hard-Delete** von Belegen ohne explizite Nutzerfreigabe und GeBüV-Roadmap — `DELETE /documents` ist heute eine bekannte Lücke, nicht ausbauen.
+- **Audit** für alle relevanten Aktionen (Upload, Download, View, OCR, Export, Admin) beibehalten oder erweitern.
+- **Mandantentrennung** (`companyId`) und keine Secrets in Git.
+- Geplante Features (Hash, `retentionUntil`, Soft-Delete, Export-Dossier) gemäss Roadmap in der Doku — nicht durch Quick-Fixes unterlaufen.
+
+Wenn eine Anforderung GeBüV widerspricht: im PR/Commit darauf hinweisen und Doku-Lücken aktualisieren.

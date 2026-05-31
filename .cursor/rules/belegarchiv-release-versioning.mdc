@@ -1,0 +1,30 @@
+---
+description: Release und Git-Push — nur versionierte Tags (APInterface-Muster), kein produktiver main-Push
+alwaysApply: true
+---
+
+# Belegarchiv — Release & Push (wie APInterface)
+
+## Pflicht für den Agenten
+
+- **Niemals** Änderungen für Produktion mit **allein** `git push origin main` abschließen.
+- **Produktion / vServer** deployt nur über **`deploy-core-vserver`** bzw. **`deploy-module-*-vserver`** bei Push eines **SemVer-Tags** `v*.*.*` (optional Suffix wie APInterface: `v0.6.22-c`).
+- **`main`-Push löst bei belegarchiv-core nur optional PR-CI aus** — kein Deploy; rote **CI #… auf main** sind für Live irrelevant, vermeiden durch tag-basiertes Release.
+
+## Ablauf Core (jedes Release)
+
+1. `package.json` → Version `X.Y.Z` setzen.
+2. Commit-Message: `type(scope): Kurzbeschreibung (vX.Y.Z)` — Version **in Klammern** wie APInterface.
+3. Annotated Tag: `git tag -a vX.Y.Z -m "Release vX.Y.Z: …"`.
+4. **Nur Tag pushen:** `git push origin vX.Y.Z` (liefert Commit + Tag an GitHub, startet Deploy).
+5. **`git push origin main` nur auf ausdrückliche Nutzeranfrage** — nicht als Standard nach jedem Fix.
+
+## Ablauf Modul-Repos
+
+- Gleiches Tag-Schema `v*.*.*` → `git push origin vX.Y.Z` → `deploy-module-*-vserver` (OCR, Belege, UID, Example).
+- **`main`-Push:** nur **`ci-module-*`** (Syntax/Import) — **kein** vServer-Deploy. Ordner `X.Y.Z/` muss zum Tag passen.
+
+## Prüfen
+
+- GitHub Actions: grüner Lauf **`deploy-core-vserver`** / Modul-Deploy mit **Tag-Namen** in der Liste (nicht nur „CI #… main“).
+- Live: Dashboard unten **Core vX.Y.Z** bzw. Modul-Version in der UI.
